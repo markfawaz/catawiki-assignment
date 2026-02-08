@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+}
+
+group = "com.catawiki"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+/**
+ * Create the uiTest source set + configurations FIRST,
+ * so uiTestImplementation exists before dependencies are declared.
+ */
+sourceSets {
+    uiTest {
+        java.srcDir file("src/uiTest/java")
+        resources.srcDir file("src/uiTest/resources")
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+configurations {
+    uiTestImplementation.extendsFrom testImplementation
+    uiTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+dependencies {
+    // JUnit (unit tests if you add them later)
+    testImplementation platform("org.junit:junit-bom:5.10.2")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+
+    // UI Test dependencies (Playwright + JUnit)
+    uiTestImplementation platform("org.junit:junit-bom:5.10.2")
+    uiTestImplementation "org.junit.jupiter:junit-jupiter"
+    uiTestImplementation "com.microsoft.playwright:playwright:1.48.0"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
+tasks.register("uiTest", Test) {
+    description = "Runs UI tests (Playwright)"
+    group = "verification"
+
+    testClassesDirs = sourceSets.uiTest.output.classesDirs
+    classpath = sourceSets.uiTest.runtimeClasspath
+    useJUnitPlatform()
+
+    // Run tags via: ./gradlew uiTest -Djunit.jupiter.tags=smoke
+    systemProperty "junit.jupiter.tags", System.getProperty("junit.jupiter.tags", "")
+
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED", "STANDARD_OUT", "STANDARD_ERROR"
+        exceptionFormat "FULL"
+        showStandardStreams true
+    }
+}
+
+tasks.register("playwrightInstall") {
+    description = "Install Playwright browsers"
+    group = "verification"
+    doLast {
+        javaexec {
+            mainClass = "com.microsoft.playwright.CLI"
+            classpath = sourceSets.uiTest.runtimeClasspath
+            args "install"
+        }
+    }
+}
+
+tasks.named("check") {
+    dependsOn("uiTest")
+}
