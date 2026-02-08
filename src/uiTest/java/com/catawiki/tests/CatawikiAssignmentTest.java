@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 public class CatawikiAssignmentTest extends BaseUiTest {
 
     @Test
-    void searchTrainOpenSecondLotAndPrintDetails() {
+    void searchSecondTrainAndPrintDetails() {
         HomePage home = new HomePage(page).open();
-        acceptCookiesIfPresent();
+        acceptCookiesAndPersistIfNeeded();
         SearchResultsPage results = home.search("train").assertOpened();
         LotPage lotPage = results.openSecondLot().assertOpened();
         LotSummary summary = lotPage.readSummary();

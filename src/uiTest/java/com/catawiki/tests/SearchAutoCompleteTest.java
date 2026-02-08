@@ -12,8 +12,7 @@ public class SearchAutoCompleteTest extends BaseUiTest {
     @Test
     void searchAutoCompletes() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
-
+        acceptCookiesAndPersistIfNeeded();
         var search = page.getByTestId("search-field").first();
         search.click();
         search.fill("tra");

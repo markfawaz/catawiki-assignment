@@ -13,14 +13,11 @@ public class CreateAccountModalTest extends BaseUiTest {
     @Test
     void createAccountFromSignInModal() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
-
+        acceptCookiesAndPersistIfNeeded();
         SignInModal signIn =
                 new HeaderNav(page).openSignInModal();
-
         CreateAccountModal createAccount =
                 signIn.clickCreateAccount();
-
         createAccount.assertCreateAccountFieldsPresent();
     }
 

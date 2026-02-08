@@ -11,7 +11,7 @@ public class SignInModalTest extends BaseUiTest {
     @Test
     void signInModalOpens() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
+        acceptCookiesAndPersistIfNeeded();
         SignInModal modal = new HeaderNav(page).openSignInModal();
         modal.assertEmailAndPasswordFieldsPresent();
     }

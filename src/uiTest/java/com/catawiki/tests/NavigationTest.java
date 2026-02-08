@@ -14,7 +14,8 @@ public class NavigationTest extends BaseUiTest {
     @Test
     void navigationTabsLeadToCorrectPages() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
+        acceptCookiesAndPersistIfNeeded();
+
         HeaderNav header = new HeaderNav(page);
 
         header.goForYou();

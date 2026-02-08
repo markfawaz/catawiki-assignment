@@ -12,18 +12,18 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class LanguageSelectionTest extends BaseUiTest {
 
     @Test
-    void selectingDeutschNavigatesToDESite() {
+    void navigatesToDESite() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
+        acceptCookiesAndPersistIfNeeded();
         HeaderNav header = new HeaderNav(page);
         header.switchToDeutsch();
         assertThat(page).hasURL(Pattern.compile("https://www\\.catawiki\\.com/de.*"));
     }
 
     @Test
-    void selectingEnglishNavigatesBackToEnSite() {
+    void navigatesBackToEnSite() {
         new HomePage(page).open();
-        acceptCookiesIfPresent();
+        acceptCookiesAndPersistIfNeeded();
         HeaderNav header = new HeaderNav(page);
         header.switchToDeutsch();
         header.switchToEnglish();

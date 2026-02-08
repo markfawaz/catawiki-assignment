@@ -38,4 +38,22 @@ public class SignInModal {
 
         return new CreateAccountModal(page).assertVisible();
     }
+
+    public SignInModal enterEmail(String email) {
+        dialog().getByLabel("Email address").fill(email);
+        return this;
+    }
+
+    public SignInModal clickSignIn() {
+        dialog()
+                .locator("button", new Locator.LocatorOptions().setHasText("Sign in"))
+                .first()
+                .click();
+        return this;
+    }
+
+    public SignInModal assertPasswordRequired() {
+        assertThat(dialog().locator("text=This field is required")).isVisible();
+        return this;
+    }
 }
