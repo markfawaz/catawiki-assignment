@@ -56,8 +56,13 @@ tasks.register("uiTest", Test) {
     classpath = sourceSets.uiTest.runtimeClasspath
     useJUnitPlatform()
 
-    // Run tags via: ./gradlew uiTest -Djunit.jupiter.tags=smoke
+    // Run tags via: ./gradlew uiTest -DslowMoMs=2000
     systemProperty "junit.jupiter.tags", System.getProperty("junit.jupiter.tags", "")
+    systemProperty "headless", System.getProperty("headless", "false")
+    systemProperty "baseUrl", System.getProperty("baseUrl", "https://www.catawiki.com/en/")
+    systemProperty "timeoutMs", System.getProperty("timeoutMs", "30000")
+    systemProperty "slowMoMs", System.getProperty("slowMoMs", "0")
+
 
     testLogging {
         events "PASSED", "FAILED", "SKIPPED", "STANDARD_OUT", "STANDARD_ERROR"

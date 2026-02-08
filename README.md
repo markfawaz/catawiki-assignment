@@ -21,10 +21,21 @@ It covers the required scenario (search → open lot → read & print values) pl
 - Java (17+ recommended)
 - Gradle wrapper included (`./gradlew`)
 
-## Run all UI tests
+## Run all UI tests 
 ```bash
 ./gradlew uiTest --rerun-tasks
 ```
+Headed browser
+No artificial delays
+Stable execution against production site
+
+```bash
+./gradlew uiTest --rerun-tasks
+```
+Passing slowMo is Useful for:
+visually following the flow
+debugging failures
+demoing test behavior
 
 ## Outputs / Artifacts
 

@@ -15,8 +15,8 @@ public final class PlaywrightFactory {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(false)     // force for now
-                        .setSlowMo(300)         // slow actions so you can see
+                        .setHeadless(TestConfig.headless())
+                        .setSlowMo(TestConfig.slowMoMs())
         );
     }
 

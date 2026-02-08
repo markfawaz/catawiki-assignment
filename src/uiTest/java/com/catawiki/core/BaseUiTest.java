@@ -55,42 +55,39 @@ public abstract class BaseUiTest {
 
 
     protected void acceptCookiesIfPresent() {
-        // Variant A: link at top-right of banner
         Locator continueWithoutLink = page.getByRole(
                 com.microsoft.playwright.options.AriaRole.LINK,
                 new Page.GetByRoleOptions().setName("Continue without accepting")
         ).first();
 
-        // Variant B: sometimes it’s a button
         Locator continueWithoutButton = page.getByRole(
                 com.microsoft.playwright.options.AriaRole.BUTTON,
                 new Page.GetByRoleOptions().setName("Continue without accepting")
         ).first();
 
-        // Variant C: "Agree" / "Agree and continue"
         Locator agree = page.getByRole(
                 com.microsoft.playwright.options.AriaRole.BUTTON,
-                new Page.GetByRoleOptions().setName(java.util.regex.Pattern.compile("^Agree( and continue)?$", java.util.regex.Pattern.CASE_INSENSITIVE))
+                new Page.GetByRoleOptions().setName(
+                        java.util.regex.Pattern.compile("^Agree( and continue)?$", java.util.regex.Pattern.CASE_INSENSITIVE)
+                )
         ).first();
 
+        // Try to "catch" the banner for a short time window (headless needs this)
         try {
-            if (continueWithoutLink.isVisible()) {
-                continueWithoutLink.click();
-                return;
-            }
+            continueWithoutLink.waitFor(new Locator.WaitForOptions().setTimeout(2500));
+            continueWithoutLink.click();
+            return;
         } catch (Exception ignored) {}
 
         try {
-            if (continueWithoutButton.isVisible()) {
-                continueWithoutButton.click();
-                return;
-            }
+            continueWithoutButton.waitFor(new Locator.WaitForOptions().setTimeout(2500));
+            continueWithoutButton.click();
+            return;
         } catch (Exception ignored) {}
 
         try {
-            if (agree.isVisible()) {
-                agree.click();
-            }
+            agree.waitFor(new Locator.WaitForOptions().setTimeout(2500));
+            agree.click();
         } catch (Exception ignored) {}
     }
 }
